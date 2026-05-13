@@ -13,7 +13,6 @@ import {
   Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 
 interface SidebarItemProps {
   icon: React.ReactNode;

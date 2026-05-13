@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, Clock, CheckCircle, Shield, MoreHorizontal } from 'lucide-react';
+import { Clock, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 type Incident = {
@@ -30,7 +30,7 @@ const severityColors = {
 const columns: Incident['status'][] = ['New', 'Investigating', 'Contained', 'Resolved', 'Closed'];
 
 export const Incidents = () => {
-  const [incidents, setIncidents] = useState(initialIncidents);
+  const [incidents] = useState(initialIncidents);
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 h-[calc(100vh-8rem)] flex flex-col">
