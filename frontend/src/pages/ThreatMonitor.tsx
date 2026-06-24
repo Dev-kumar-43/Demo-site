@@ -19,7 +19,7 @@ export const ThreatMonitor = () => {
 
   const fetchAlerts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/alerts');
+      const res = await fetch('/api/alerts');
       const data = await res.json();
       if (data.success) {
         setAlerts(data.data.sort((a: Alert, b: Alert) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
@@ -40,7 +40,7 @@ export const ThreatMonitor = () => {
 
   const simulateAttack = async () => {
     try {
-      await fetch('http://localhost:5000/api/simulate-attack', { method: 'POST' });
+      await fetch('/api/simulate-attack', { method: 'POST' });
       fetchAlerts();
     } catch (e) {
       console.error('Simulation failed', e);

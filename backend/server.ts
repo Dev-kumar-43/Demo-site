@@ -4,8 +4,6 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import hpp from 'hpp';
-// @ts-ignore
-import xss from 'xss-clean';
 import multer from 'multer';
 import path from 'path';
 
@@ -45,7 +43,6 @@ app.use(express.json({ limit: '10kb' })); // Body parser
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(morgan('combined'));
 app.use(hpp()); // Prevent HTTP Parameter Pollution
-app.use(xss()); // Prevent XSS
 
 // Rate Limiting
 const apiLimiter = rateLimit({

@@ -1,4 +1,5 @@
-
+import { motion } from 'framer-motion';
+import { staggerContainer, slideUpVariant } from '../lib/animations';
 import { 
   ShieldAlert, 
   Activity, 
@@ -48,8 +49,13 @@ const severityData = [
 
 export const Dashboard = () => {
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <motion.div 
+      variants={staggerContainer}
+      initial="hidden"
+      animate="show"
+      className="space-y-6"
+    >
+      <motion.div variants={slideUpVariant} className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Executive Summary</h2>
           <p className="text-muted-foreground mt-1">Real-time overview of security posture and active threats.</p>
@@ -59,10 +65,11 @@ export const Dashboard = () => {
             Last updated: Just now
           </Badge>
         </div>
-      </div>
+      </motion.div>
 
       {/* KPI Cards */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <motion.div variants={slideUpVariant}>
         <Card className="bg-card/50 backdrop-blur border-border/50 hover:border-border transition-colors">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Threats Blocked (24h)</CardTitle>
@@ -76,6 +83,8 @@ export const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+        </motion.div>
+        <motion.div variants={slideUpVariant}>
         <Card className="bg-card/50 backdrop-blur border-border/50 hover:border-border transition-colors">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Active Incidents</CardTitle>
@@ -89,6 +98,8 @@ export const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+        </motion.div>
+        <motion.div variants={slideUpVariant}>
         <Card className="bg-card/50 backdrop-blur border-border/50 hover:border-border transition-colors">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">System Health Score</CardTitle>
@@ -102,6 +113,8 @@ export const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+        </motion.div>
+        <motion.div variants={slideUpVariant}>
         <Card className="bg-card/50 backdrop-blur border-border/50 hover:border-border transition-colors">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Failed Logins (1h)</CardTitle>
@@ -115,11 +128,13 @@ export const Dashboard = () => {
             </p>
           </CardContent>
         </Card>
+        </motion.div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-7">
         {/* Main Chart */}
-        <Card className="md:col-span-4 bg-card/50 backdrop-blur border-border/50">
+        <motion.div variants={slideUpVariant} className="md:col-span-4">
+        <Card className="h-full bg-card/50 backdrop-blur border-border/50">
           <CardHeader>
             <CardTitle>Threat Trends (24h)</CardTitle>
             <CardDescription>Volume of detected anomalies and blocked threats.</CardDescription>
@@ -145,9 +160,11 @@ export const Dashboard = () => {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+        </motion.div>
 
         {/* Secondary Chart */}
-        <Card className="md:col-span-3 bg-card/50 backdrop-blur border-border/50">
+        <motion.div variants={slideUpVariant} className="md:col-span-3">
+        <Card className="h-full bg-card/50 backdrop-blur border-border/50">
           <CardHeader>
             <CardTitle>Alerts by Severity</CardTitle>
             <CardDescription>Distribution of active alerts across severity levels.</CardDescription>
@@ -171,9 +188,11 @@ export const Dashboard = () => {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+        </motion.div>
       </div>
 
       {/* Recent Alerts Table */}
+      <motion.div variants={slideUpVariant}>
       <Card className="bg-card/50 backdrop-blur border-border/50">
         <CardHeader>
           <CardTitle>Recent Critical Alerts</CardTitle>
@@ -218,11 +237,12 @@ export const Dashboard = () => {
           </div>
         </CardContent>
       </Card>
+      </motion.div>
 
       {/* File Upload Section */}
-      <div className="grid gap-6">
+      <motion.div variants={slideUpVariant} className="grid gap-6">
         <FileUpload />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
