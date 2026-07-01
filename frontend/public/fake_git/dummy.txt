@@ -1,0 +1,3 @@
+This is a dummy .git directory exposed intentionally.
+It contains no real repository data.
+Have fun testing!
