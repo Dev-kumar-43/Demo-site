@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tomcat Web Application Manager</title>
+</head>
+<body>
+  <h1>Tomcat Web Application Manager</h1>
+  <p>Message: OK - Authentication required.</p>
+  <form action="/manager/html/upload" method="post" enctype="multipart/form-data">
+    WAR file to deploy: <input type="file" name="deployWar" />
+    <input type="submit" value="Deploy" />
+  </form>
+</body>
+</html>
