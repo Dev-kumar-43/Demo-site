@@ -7,7 +7,7 @@ const adminRedirectPlugin = () => {
   return {
     name: 'admin-redirect',
     configureServer(server: any) {
-      server.middlewares.use((req: any, res: any, next: any) => {
+      server.middlewares.use((req: any, _res: any, next: any) => {
         if (req.url?.startsWith('/admin/') && !req.url.includes('.')) {
           req.url = req.url.endsWith('/') ? `${req.url}index.html` : `${req.url}/index.html`;
         }
