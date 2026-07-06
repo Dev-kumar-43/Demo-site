@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Prometheus Time Series Collection and Processing Server</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }
+        .navbar { background-color: #e6522c; padding: 10px 20px; color: white; display: flex; align-items: center; }
+        .navbar-brand { font-size: 20px; font-weight: bold; text-decoration: none; color: white; margin-right: 20px; }
+        .nav-link { color: rgba(255,255,255,.75); text-decoration: none; padding: 8px 12px; }
+        .nav-link:hover { color: white; }
+        .container { padding: 20px; }
+        .search-box { width: 100%; max-width: 800px; padding: 10px; font-size: 16px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 20px; font-family: monospace; }
+        .btn { padding: 8px 16px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .btn:hover { background-color: #0056b3; }
+        .panel { background: white; border: 1px solid #dfdfdf; border-radius: 4px; padding: 20px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #dfdfdf; }
+        th { background-color: #f1f1f1; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="#">Prometheus</a>
+        <a class="nav-link" href="#">Alerts</a>
+        <a class="nav-link" href="#">Graph</a>
+        <a class="nav-link" href="#">Status</a>
+        <a class="nav-link" href="#">Help</a>
+    </nav>
+    <div class="container">
+        <h2>Graph</h2>
+        <div>
+            <input type="text" class="search-box" value="up" placeholder="Expression (press Shift+Enter for newlines)">
+            <button class="btn">Execute</button>
+        </div>
+        <div class="panel">
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <button class="btn" style="background-color: #6c757d;">Table</button>
+                <button class="btn" style="background-color: transparent; color: #007bff; border: 1px solid #007bff;">Graph</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>up{instance="localhost:9090", job="prometheus"}</code></td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td><code>up{instance="localhost:9100", job="node_exporter"}</code></td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 20px; color: #6c757d; font-size: 14px;">
+                Evaluation time: 1.2ms
+            </div>
+        </div>
+    </div>
+</body>
+</html>
