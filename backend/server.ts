@@ -67,16 +67,16 @@ app.use('/api/v3', demoApiRouter);
 
 // GraphQL Endpoint (Configurable for API-P0-05 and other tests)
 import { customGraphQLHandler } from './graphql-handler';
-import { graphqlHTTP } from 'express-graphql';
-import { schema as mockGraphQLSchema } from './graphql-schema';
 
 app.post('/api/v3/graphql', customGraphQLHandler);
 
-// Serve the beautiful GraphiQL GUI for browser visits
-app.get('/api/v3/graphql', graphqlHTTP({
-  schema: mockGraphQLSchema,
-  graphiql: true, 
-}));
+// Return a clear JSON message for browser GET requests instead of a broken UI
+app.get('/api/v3/graphql', (req, res) => {
+  res.status(405).json({ 
+    status: "active",
+    message: "GraphQL endpoint is running. Please use POST requests with application/json to execute queries (e.g. via API Vigil or curl)."
+  });
+});
 
 // Serve OpenAPI Spec
 const openApiPath = process.env.NODE_ENV === 'production' 
