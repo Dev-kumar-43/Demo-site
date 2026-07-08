@@ -253,6 +253,23 @@ paths:
       responses:
         '200':
           description: Retrieved object.
+  /api/v3/test/cors:
+    get:
+      summary: CORS Variations Demo
+      tags:
+        - Testing
+      description: |
+        Demo endpoint for validating CORS detection by API security scanners.
+        This endpoint supports multiple intentionally configurable CORS policies and exists solely for QA/testing purposes.
+        It must never be enabled in production.
+      responses:
+        '200':
+          description: Successful execution of the CORS test endpoint.
+          content:
+            application/json:
+              example:
+                success: true
+                message: "CORS test endpoint"
 components:
   securitySchemes:
     bearerAuth:

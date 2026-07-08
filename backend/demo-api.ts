@@ -339,4 +339,57 @@ router.get('/test/mass-assignment/:id', (req, res) => {
   res.status(200).json(obj);
 });
 
+// ==========================================
+// API-P0-04: CORS Variations
+// ==========================================
+router.get('/test/cors', (req, res) => {
+  const mode = process.env.CORS_TEST_MODE || 'dangerous';
+  const allowCredentials = process.env.CORS_ALLOW_CREDENTIALS === 'true';
+  const requestOrigin = req.headers.origin;
+
+  // Clear any pre-existing CORS headers set by the global middleware
+  res.removeHeader('Access-Control-Allow-Origin');
+  res.removeHeader('Access-Control-Allow-Credentials');
+
+  switch (mode) {
+    case 'wildcard':
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      break;
+    case 'reflected':
+      if (requestOrigin) {
+        res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+      }
+      break;
+    case 'null-origin':
+      res.setHeader('Access-Control-Allow-Origin', 'null');
+      break;
+    case 'dangerous':
+      if (requestOrigin) {
+        res.setHeader('Access-Control-Allow-Origin', requestOrigin);
+      }
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      break;
+    case 'secure':
+      res.setHeader('Access-Control-Allow-Origin', 'https://dashboard.example.com');
+      // Only allow credentials for the secure origin
+      if (allowCredentials) {
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+      }
+      break;
+    default:
+      // Default secure fallback
+      res.setHeader('Access-Control-Allow-Origin', 'https://dashboard.example.com');
+  }
+
+  // Explicitly apply the standalone credentials flag if requested (except for dangerous/secure which handle it)
+  if (allowCredentials && mode !== 'dangerous' && mode !== 'secure') {
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "CORS test endpoint"
+  });
+});
+
 export default router;
