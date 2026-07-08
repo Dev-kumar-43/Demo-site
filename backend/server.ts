@@ -66,8 +66,12 @@ const alerts = [
 app.use('/api/v3', demoApiRouter);
 
 // Serve OpenAPI Spec
-app.get('/api/v1/openapi.yaml', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'openapi.yaml'));
+const openApiPath = process.env.NODE_ENV === 'production' 
+  ? path.join(__dirname, '..', 'public', 'openapi.yaml') // from dist/
+  : path.join(__dirname, 'public', 'openapi.yaml');      // from root
+
+app.get(['/api/v1/openapi.yaml', '/api/openapi.yaml'], (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'openapi.yaml')); // __dirname in PM2 is the 'dist' folder
 });
 
 // Routes
