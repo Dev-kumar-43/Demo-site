@@ -54,11 +54,16 @@ const apiLimiter = rateLimit({
 });
 app.use('/api/', apiLimiter);
 
+import demoApiRouter from './demo-api';
+
 // Simulated database
 const alerts = [
   { id: 1, source_ip: '192.168.1.105', dest_ip: '10.0.0.5', attack_type: 'Ransomware Behavior Detected', severity: 'Critical', timestamp: new Date().toISOString() },
   { id: 2, source_ip: '45.22.19.88', dest_ip: '10.0.0.2', attack_type: 'Multiple Failed Root Logins', severity: 'High', timestamp: new Date().toISOString() },
 ];
+
+// Mount Demo API Router
+app.use('/api/v3', demoApiRouter);
 
 // Routes
 app.get('/api/health', (req, res) => {
@@ -120,7 +125,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   res.status(500).json({ error: 'An unexpected error occurred. Please try again later.' }); // Generic error to client
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5010;
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
