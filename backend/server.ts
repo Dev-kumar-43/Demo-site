@@ -65,18 +65,13 @@ const alerts = [
 // Mount Demo API Router
 app.use('/api/v3', demoApiRouter);
 
-// GraphQL Endpoint (Protected for MIS-P0-05)
-import { graphqlHTTP } from 'express-graphql';
-import { schema as mockGraphQLSchema } from './graphql-schema';
+// GraphQL Endpoint (Configurable for API-P0-05 and other tests)
+import { customGraphQLHandler } from './graphql-handler';
 
-app.use(
-  '/api/v3/graphql',
-  // UNPROTECTED: Exposed for testing Introspection and Depth Abuse
-  graphqlHTTP({
-    schema: mockGraphQLSchema,
-    graphiql: true, // Allows testing via browser GUI
-  })
-);
+app.post('/api/v3/graphql', customGraphQLHandler);
+app.get('/api/v3/graphql', (req, res) => {
+  res.status(405).json({ error: 'GraphQL endpoint only supports POST requests for security testing.' });
+});
 
 // Serve OpenAPI Spec
 const openApiPath = process.env.NODE_ENV === 'production' 
