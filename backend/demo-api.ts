@@ -255,4 +255,42 @@ router.get('/vulnerable/fake-200-auth', (req, res) => {
   }
 });
 
+// VULNERABLE: API-P1-10 Sensitive Information Disclosure
+// Simulates an endpoint that unintentionally exposes sensitive information in error responses
+router.post('/test/sensitive-error', (req, res) => {
+  const response: any = {
+    success: false,
+    message: "Unhandled exception occurred."
+  };
+
+  // Configure which sensitive information to leak via environment variables (defaulting to true)
+  if (process.env.LEAK_STACK_TRACE !== 'false') {
+    response.stackTrace = "TypeError: Cannot read properties of undefined at UserService.js:42";
+  }
+  if (process.env.LEAK_SQL_ERROR !== 'false') {
+    response.sqlError = "SELECT * FROM users WHERE id='1' OR '1'='1'";
+  }
+  if (process.env.LEAK_INTERNAL_IP !== 'false') {
+    response.internalIp = "10.0.0.15";
+  }
+  if (process.env.LEAK_HOSTNAME !== 'false') {
+    response.serverHostname = "prod-app-01";
+  }
+  if (process.env.LEAK_AWS_METADATA !== 'false') {
+    response.awsMetadata = "169.254.169.254";
+  }
+  if (process.env.LEAK_SECRET !== 'false') {
+    response.secret = "AWS_SECRET_ACCESS_KEY=TEST_SECRET_KEY";
+  }
+  if (process.env.LEAK_JWT_SECRET !== 'false') {
+    response.jwtSecret = "JWT_SECRET=test-secret-key";
+  }
+  if (process.env.LEAK_REQUEST_ID !== 'false') {
+    response.requestId = "123456789";
+  }
+
+  // Intentionally return a 500 Internal Server Error with the sensitive payload
+  return res.status(500).json(response);
+});
+
 export default router;

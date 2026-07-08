@@ -161,6 +161,42 @@ paths:
       responses:
         '200':
           description: GraphQL query result
+  /api/v3/test/sensitive-error:
+    post:
+      summary: Demo endpoint for API security scanner validation.
+      tags:
+        - Testing
+      description: |
+        This endpoint intentionally returns simulated sensitive information in error responses for validating API security scanners. It is intended for testing environments only and must never be enabled in production.
+        
+        **Warning:** This endpoint is intentionally vulnerable and exists solely for QA/security scanner validation. It must be disabled or removed in production deployments.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                simulate:
+                  type: boolean
+                  example: true
+      responses:
+        '500':
+          description: Internal Server Error (Simulated Leak)
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Unhandled exception occurred."
+                stackTrace: "TypeError: Cannot read properties of undefined at UserService.js:42"
+                sqlError: "SELECT * FROM users WHERE id='1' OR '1'='1'"
+                database: "PostgreSQL 16"
+                internalIp: "10.0.0.15"
+                serverHostname: "prod-app-01"
+                awsMetadata: "169.254.169.254"
+                secret: "AWS_SECRET_ACCESS_KEY=TEST_SECRET_KEY"
+                jwtSecret: "JWT_SECRET=test-secret-key"
+                requestId: "123456789"
 components:
   securitySchemes:
     bearerAuth:
