@@ -67,11 +67,16 @@ app.use('/api/v3', demoApiRouter);
 
 // GraphQL Endpoint (Configurable for API-P0-05 and other tests)
 import { customGraphQLHandler } from './graphql-handler';
+import { graphqlHTTP } from 'express-graphql';
+import { schema as mockGraphQLSchema } from './graphql-schema';
 
 app.post('/api/v3/graphql', customGraphQLHandler);
-app.get('/api/v3/graphql', (req, res) => {
-  res.status(405).json({ error: 'GraphQL endpoint only supports POST requests for security testing.' });
-});
+
+// Serve the beautiful GraphiQL GUI for browser visits
+app.get('/api/v3/graphql', graphqlHTTP({
+  schema: mockGraphQLSchema,
+  graphiql: true, 
+}));
 
 // Serve OpenAPI Spec
 const openApiPath = process.env.NODE_ENV === 'production' 
