@@ -71,10 +71,9 @@ import { schema as mockGraphQLSchema } from './graphql-schema';
 
 app.use(
   '/api/v3/graphql',
-  requireAuth, // Protects GraphQL (introspection, batch, depth queries) from unauthenticated access
   graphqlHTTP({
     schema: mockGraphQLSchema,
-    graphiql: true, // Allows testing via browser GUI if accessed with token
+    graphiql: true, // Allows testing via browser GUI
   })
 );
 

@@ -145,6 +145,22 @@ paths:
       responses:
         '200':
           description: Always returns 200 OK, but body indicates error if unauthorized
+  /api/v3/graphql:
+    post:
+      summary: Unauthenticated GraphQL endpoint for Introspection and Depth Abuse testing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: The GraphQL query string
+      responses:
+        '200':
+          description: GraphQL query result
 components:
   securitySchemes:
     bearerAuth:
