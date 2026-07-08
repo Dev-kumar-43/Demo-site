@@ -162,6 +162,24 @@ paths:
         '200':
           description: GraphQL query result
   /api/v3/test/sensitive-error:
+    get:
+      summary: Demo endpoint for API security scanner validation (GET).
+      tags:
+        - Testing
+      description: Returns simulated sensitive information in error responses for validating API security scanners.
+      responses:
+        '500':
+          description: Internal Server Error (Simulated Leak)
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Unhandled exception occurred."
+                stackTrace: "TypeError: Cannot read properties of undefined at UserService.js:42"
+                sqlError: "SELECT * FROM users WHERE id='1' OR '1'='1'"
+                internalIp: "10.0.0.15"
+                awsMetadata: "169.254.169.254"
+                secret: "AWS_SECRET_ACCESS_KEY=TEST_SECRET_KEY"
     post:
       summary: Demo endpoint for API security scanner validation.
       tags:
