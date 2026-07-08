@@ -54,7 +54,7 @@ const apiLimiter = rateLimit({
 });
 app.use('/api/', apiLimiter);
 
-import demoApiRouter from './demo-api';
+import demoApiRouter, { requireAuth } from './demo-api';
 
 // Simulated database
 const alerts = [
@@ -70,7 +70,8 @@ const openApiPath = process.env.NODE_ENV === 'production'
   ? path.join(__dirname, '..', 'public', 'openapi.yaml') // from dist/
   : path.join(__dirname, 'public', 'openapi.yaml');      // from root
 
-app.get(['/api/v1/openapi.yaml', '/api/openapi.yaml'], (req, res) => {
+// PROTECTED API DOCS: API Vigil Test Case MIS-P0-08
+app.get(['/api/v1/openapi.yaml', '/api/openapi.yaml'], requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'openapi.yaml')); // __dirname in PM2 is the 'dist' folder
 });
 

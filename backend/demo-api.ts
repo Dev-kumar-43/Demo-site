@@ -36,7 +36,7 @@ const MOCK_OBJECTS = [
 ];
 
 // Secure authentication middleware (Mock)
-const requireAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const requireAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Unauthorized: Missing or invalid token' });
