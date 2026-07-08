@@ -65,6 +65,11 @@ const alerts = [
 // Mount Demo API Router
 app.use('/api/v3', demoApiRouter);
 
+// Serve OpenAPI Spec
+app.get('/api/v1/openapi.yaml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'openapi.yaml'));
+});
+
 // Routes
 app.get('/api/health', (req, res) => {
   res.json({ status: 'healthy', timestamp: new Date().toISOString() });

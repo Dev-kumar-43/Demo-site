@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  title: SOC Platform API
+  description: API documentation for the SOC Security Platform
+  version: 1.0.0
+servers:
+  - url: https://sparky.monster
+paths:
+  /api/health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /api/alerts:
+    get:
+      summary: Get all security alerts
+      responses:
+        '200':
+          description: OK
+  /api/simulate-attack:
+    post:
+      summary: Simulate a new attack
+      responses:
+        '201':
+          description: Created
+  /api/upload:
+    post:
+      summary: Upload a file
+      responses:
+        '200':
+          description: Upload successful
+  /api/v3/login:
+    post:
+      summary: Login to get a JWT
+      responses:
+        '200':
+          description: Returns a JWT token
+  /api/v3/user/secret:
+    get:
+      summary: Get secure user secret
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+  /api/v3/pet:
+    post:
+      summary: Add a new pet
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: Created
+  /api/v3/pet/findByStatus:
+    get:
+      summary: Find pets by status
+      responses:
+        '200':
+          description: OK
+  /api/v3/pet/{id}:
+    get:
+      summary: Find pet by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+    delete:
+      summary: Delete pet by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/v3/vulnerable/object/{id}:
+    get:
+      summary: BOLA vulnerable endpoint (Sequential ID)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/v3/vulnerable/object/uuid/{uuid}:
+    get:
+      summary: BOLA vulnerable endpoint (UUID)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /api/v3/secure/object/{id}:
+    get:
+      summary: Secure object retrieval (Sequential ID)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /api/v3/secure/object/uuid/{uuid}:
+    get:
+      summary: Secure object retrieval (UUID)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /api/v3/vulnerable/fake-200-auth:
+    get:
+      summary: Test endpoint for fake 200 OK anti-pattern
+      responses:
+        '200':
+          description: Always returns 200 OK, but body indicates error if unauthorized
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
