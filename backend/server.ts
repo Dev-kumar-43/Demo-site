@@ -85,7 +85,11 @@ const openApiPath = process.env.NODE_ENV === 'production'
 
 // UNPROTECTED API DOCS (Publicly exposed for testing)
 app.get(['/api/v1/openapi.yaml', '/api/openapi.yaml'], (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'openapi.yaml')); // __dirname in PM2 is the 'dist' folder
+  if (process.env.OPENAPI_TEST_MODE === 'parser-robustness') {
+    res.sendFile(path.join(__dirname, '..', 'public', 'openapi-malformed.yaml'));
+  } else {
+    res.sendFile(path.join(__dirname, '..', 'public', 'openapi.yaml'));
+  }
 });
 
 // Routes

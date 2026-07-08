@@ -1,0 +1,215 @@
+# ==========================================
+# QA Testing OpenAPI Specification
+# Used for API-P0-03 Parser Robustness Testing
+# Intentionally contains malformed elements
+# Do NOT deploy to production
+# ==========================================
+openapi: 3.0.3
+info:
+  title: SOC Platform API (Malformed)
+  description: Intentionally malformed API documentation for testing
+  version: 1.0.0
+# INTENTIONAL ERROR: Missing servers section
+# servers:
+#   - url: https://sparky.monster
+paths:
+  /api/health:
+    get:
+      summary: Health check (Valid Endpoint)
+      responses:
+        '200':
+          description: OK
+  /api/alerts:
+    get:
+      # INTENTIONAL ERROR: Malformed Optional Fields
+      summary:
+      description: ""
+      tags: []
+      responses:
+        '200':
+          description: OK
+  /api/simulate-attack:
+    post:
+      summary: Simulate a new attack
+      security:
+        - basicAuth: []
+      responses:
+        '201':
+          description: Created
+  /api/upload:
+    post:
+      summary: Upload a file
+      security:
+        - apiKeyHeader: []
+      responses:
+        '200':
+          description: Upload successful
+  /api/v3/login:
+    post:
+      summary: Login to get a JWT
+      security:
+        - oauth2:
+            - scope1
+      responses:
+        '200':
+          description: Returns a JWT token
+  /api/v3/pet:
+    post:
+      summary: Add a pet (Uses Deep Nesting Schema)
+      security:
+        - apiKeyQuery: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Level1'
+      responses:
+        '201':
+          description: Created
+  /api/v3/user:
+    get:
+      summary: Get user (Uses Circular Schema)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/v3/broken:
+    get:
+      summary: Endpoint with Broken Reference
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                # INTENTIONAL ERROR: Broken Reference
+                $ref: '#/components/schemas/DoesNotExist'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    basicAuth:
+      type: http
+      scheme: basic
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: api_key
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}
+  schemas:
+    # INTENTIONAL ERROR: Circular Schema References
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        manager:
+          $ref: '#/components/schemas/User'
+        employee:
+          $ref: '#/components/schemas/Employee'
+    Employee:
+      type: object
+      properties:
+        manager:
+          $ref: '#/components/schemas/Manager'
+    Manager:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+    # INTENTIONAL ERROR: Deep Schema Nesting (15+ levels)
+    Level1:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level2'
+    Level2:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level3'
+    Level3:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level4'
+    Level4:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level5'
+    Level5:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level6'
+    Level6:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level7'
+    Level7:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level8'
+    Level8:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level9'
+    Level9:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level10'
+    Level10:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level11'
+    Level11:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level12'
+    Level12:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level13'
+    Level13:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level14'
+    Level14:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level15'
+    Level15:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/Level16'
+    Level16:
+      type: object
+      properties:
+        next:
+          type: string
