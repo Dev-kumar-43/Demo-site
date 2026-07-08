@@ -34,7 +34,7 @@ const RootQueryType = new GraphQLObjectType({
     user: {
       type: UserType,
       args: { id: { type: GraphQLInt } },
-      resolve: (_, args) => {
+      resolve: (_: any, args: any) => {
         return mockUser;
       }
     },
