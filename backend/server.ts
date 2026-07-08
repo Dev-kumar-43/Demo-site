@@ -65,6 +65,19 @@ const alerts = [
 // Mount Demo API Router
 app.use('/api/v3', demoApiRouter);
 
+// GraphQL Endpoint (Protected for MIS-P0-05)
+import { graphqlHTTP } from 'express-graphql';
+import { schema as mockGraphQLSchema } from './graphql-schema';
+
+app.use(
+  '/api/v3/graphql',
+  requireAuth, // Protects GraphQL (introspection, batch, depth queries) from unauthenticated access
+  graphqlHTTP({
+    schema: mockGraphQLSchema,
+    graphiql: true, // Allows testing via browser GUI if accessed with token
+  })
+);
+
 // Serve OpenAPI Spec
 const openApiPath = process.env.NODE_ENV === 'production' 
   ? path.join(__dirname, '..', 'public', 'openapi.yaml') // from dist/
