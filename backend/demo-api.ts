@@ -293,4 +293,41 @@ router.all('/test/sensitive-error', (req, res) => {
   return res.status(500).json(response);
 });
 
+// ==========================================
+// API-P0-07: Mass Assignment Detection
+// ==========================================
+const MOCK_MASS_ASSIGNMENT_DB: any[] = [];
+let massAssignmentIdCounter = 1;
+
+router.post('/test/mass-assignment', (req, res) => {
+  const mode = process.env.MASS_ASSIGNMENT_MODE || 'vulnerable';
+  
+  let newObject: any = { id: massAssignmentIdCounter++ };
+
+  if (mode === 'secure') {
+    // SECURE MODE: Explicitly extract only allowed fields
+    newObject.name = req.body.name;
+    newObject.email = req.body.email;
+  } else {
+    // VULNERABLE MODE: Blindly merge all incoming properties
+    newObject = { ...newObject, ...req.body };
+  }
+
+  // Save to in-memory database
+  MOCK_MASS_ASSIGNMENT_DB.push(newObject);
+
+  res.status(201).json(newObject);
+});
+
+router.get('/test/mass-assignment/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const obj = MOCK_MASS_ASSIGNMENT_DB.find(o => o.id === id);
+
+  if (!obj) {
+    return res.status(404).json({ error: 'Object not found' });
+  }
+
+  res.status(200).json(obj);
+});
+
 export default router;

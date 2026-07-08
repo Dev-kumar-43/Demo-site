@@ -215,6 +215,44 @@ paths:
                 secret: "AWS_SECRET_ACCESS_KEY=TEST_SECRET_KEY"
                 jwtSecret: "JWT_SECRET=test-secret-key"
                 requestId: "123456789"
+  /api/v3/test/mass-assignment:
+    post:
+      summary: Mass Assignment Vulnerability Demo
+      tags:
+        - Testing
+      description: |
+        Demo endpoint for validating Mass Assignment detection by API security scanners.
+        This endpoint intentionally supports both secure and vulnerable modes.
+        It exists only for QA/testing and must never be enabled in production.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: "John Doe"
+              email: "john@example.com"
+              isAdmin: true
+              role: "admin"
+              discount: 100
+              tenantId: "tenant-002"
+      responses:
+        '201':
+          description: Created object.
+  /api/v3/test/mass-assignment/{id}:
+    get:
+      summary: Retrieve Mass Assignment Object
+      tags:
+        - Testing
+      description: Returns the persisted object so security scanners can verify whether unauthorized properties were stored.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Retrieved object.
 components:
   securitySchemes:
     bearerAuth:
