@@ -257,7 +257,7 @@ router.get('/vulnerable/fake-200-auth', (req, res) => {
 
 // VULNERABLE: API-P1-10 Sensitive Information Disclosure
 // Simulates an endpoint that unintentionally exposes sensitive information in error responses
-router.post('/test/sensitive-error', (req, res) => {
+router.all('/test/sensitive-error', (req, res) => {
   const response: any = {
     success: false,
     message: "Unhandled exception occurred."
