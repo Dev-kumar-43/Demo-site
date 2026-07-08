@@ -319,6 +319,15 @@ router.post('/test/mass-assignment', (req, res) => {
   res.status(201).json(newObject);
 });
 
+// Added a GET for the root path so browser visits don't return "Cannot GET"
+router.get('/test/mass-assignment', (req, res) => {
+  res.status(200).json({
+    message: "Mass Assignment endpoint is active.",
+    totalItems: MOCK_MASS_ASSIGNMENT_DB.length,
+    items: MOCK_MASS_ASSIGNMENT_DB
+  });
+});
+
 router.get('/test/mass-assignment/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   const obj = MOCK_MASS_ASSIGNMENT_DB.find(o => o.id === id);
