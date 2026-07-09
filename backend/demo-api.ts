@@ -235,24 +235,20 @@ router.get('/secure/object/uuid/:uuid', requireAuth, (req, res) => {
   res.status(200).json({ success: true, data: obj });
 });
 
-// VULNERABLE: Anti-pattern where 200 OK is returned despite authentication failure
-// This is used to test if scanners incorrectly rely solely on HTTP status codes
+// VULNERABLE: Unauthenticated endpoint returning sensitive information with a fake 200 OK
+// This is used to test if scanners incorrectly rely solely on HTTP status codes or miss sensitive data exposure
 router.get('/vulnerable/fake-200-auth', (req, res) => {
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    // ANTI-PATTERN: Returning 200 OK instead of 401 Unauthorized
-    return res.status(200).json({ error: 'unauthorized', message: 'Missing or invalid token' });
-  }
-
-  const token = authHeader.split(' ')[1];
-  try {
-    jwt.verify(token, JWT_SECRET);
-    res.status(200).json({ success: true, message: 'You are authenticated!' });
-  } catch (err) {
-    // ANTI-PATTERN: Returning 200 OK instead of 401 Unauthorized
-    return res.status(200).json({ error: 'unauthorized', message: 'Invalid token' });
-  }
+  // Authentication check completely removed as requested
+  // Returning sensitive data to trigger scanner alerts
+  res.status(200).json({ 
+    success: true, 
+    message: 'User profile retrieved successfully',
+    sensitiveData: {
+      ssn: "***-**-1234",
+      creditCard: "4532 1234 5678 9010",
+      privateKey: "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA..."
+    }
+  });
 });
 
 // VULNERABLE: API-P1-10 Sensitive Information Disclosure
