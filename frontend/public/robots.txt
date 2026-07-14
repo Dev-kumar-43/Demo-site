@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# External Assets
+# Scanner bait: intentionally exposing the S3 bucket URL here for Nuclei detection
+Disallow: https://assets-sparky-monster.s3.us-east-1.amazonaws.com/
