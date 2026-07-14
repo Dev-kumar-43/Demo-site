@@ -268,7 +268,8 @@ router.get('/vulnerable/fake-200-auth', (req, res) => {
 router.all('/test/sensitive-error', (req, res) => {
   const response: any = {
     success: false,
-    message: "Unhandled exception occurred."
+    message: "Unhandled exception occurred.",
+    assetBucketUrl: "https://assets-sparky-monster.s3.us-east-1.amazonaws.com"
   };
 
   // Configure which sensitive information to leak via environment variables (defaulting to true)
